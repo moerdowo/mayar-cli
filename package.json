@@ -1,7 +1,7 @@
 {
   "name": "mayar-cli",
   "version": "0.1.0",
-  "description": "Command-line interface for the Mayar API (production endpoint).",
+  "description": "Zero-dependency Node.js CLI for the Mayar API (production endpoint).",
   "bin": {
     "mayar": "./bin/mayar.js"
   },
@@ -12,10 +12,29 @@
   "engines": {
     "node": ">=18"
   },
+  "keywords": [
+    "mayar",
+    "mayar-api",
+    "payments",
+    "invoice",
+    "cli",
+    "indonesia",
+    "qris"
+  ],
+  "author": "Frianto Moerdowo <frianto@duck.com>",
   "license": "MIT",
+  "homepage": "https://github.com/moerdowo/mayar-cli#readme",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/moerdowo/mayar-cli.git"
+  },
+  "bugs": {
+    "url": "https://github.com/moerdowo/mayar-cli/issues"
+  },
   "files": [
     "bin",
     "src",
-    "README.md"
+    "README.md",
+    "LICENSE"
   ]
 }
