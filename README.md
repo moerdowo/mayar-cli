@@ -1,15 +1,21 @@
-# mayar-cli
+# mayar
 
 Command-line interface for the [Mayar](https://docs.mayar.id) API. Production-only (`https://api.mayar.id`). Zero runtime dependencies — Node.js 18+ stdlib only.
 
 ## Install
 
 ```bash
-git clone <this repo> mayar-cli
+npm install -g mayar
+# or run without installing:
+npx mayar --help
+```
+
+Or from source:
+
+```bash
+git clone https://github.com/moerdowo/mayar-cli.git
 cd mayar-cli
 npm link        # exposes a `mayar` command on your PATH
-# or run directly:
-node bin/mayar.js --help
 ```
 
 ## First run
