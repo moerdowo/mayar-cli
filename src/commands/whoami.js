@@ -44,12 +44,9 @@ async function run({ apiKey, flags }) {
     const name = decoded.name || decoded.merchantName || decoded.fullName;
     const id = decoded.accountId || decoded.userId || decoded.sub || decoded.id;
     const email = decoded.email || decoded.merchantEmail;
-    const role = decoded.role || decoded.type;
     if (name)  process.stdout.write(`${ui.bold('Name:')}       ${name}\n`);
     if (email) process.stdout.write(`${ui.bold('Email:')}      ${email}\n`);
     if (id)    process.stdout.write(`${ui.bold('Account ID:')} ${id}\n`);
-    if (role)  process.stdout.write(`${ui.bold('Role:')}       ${role}\n`);
-    if (decoded.iat) process.stdout.write(`${ui.bold('Issued:')}     ${fmtTs(decoded.iat)}\n`);
     if (decoded.exp) process.stdout.write(`${ui.bold('Expires:')}    ${fmtTs(decoded.exp)}\n`);
   } else {
     process.stdout.write(ui.dim('(API key is not a decodable JWT — skipping local profile)') + '\n');
