@@ -65,7 +65,7 @@ ${ui.bold('Global flags:')}
   -v, --version         Show version
 
 ${ui.dim('Endpoint: https://api.mayar.id (production only)')}
-${ui.dim('Config:   ~/.mayar/config.json (chmod 600)')}
+${ui.dim('Config:   ~/.config/mayar/config.json (chmod 600)')}
 `;
 
 function parseFlags(argv) {

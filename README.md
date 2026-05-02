@@ -20,7 +20,7 @@ npm link        # exposes a `mayar` command on your PATH
 
 ## First run
 
-The first time you invoke any command, the CLI prints an ASCII banner and asks for your production API key (input is masked). Paste it once; it's stored at `~/.mayar/config.json` (chmod 600) and reused on subsequent runs.
+The first time you invoke any command, the CLI prints an ASCII banner and asks for your production API key (input is masked). Paste it once; it's stored at `~/.config/mayar/config.json` (chmod 600, follows the [XDG Base Directory](https://specification.freedesktop.org/basedir-spec/latest/) spec) and reused on subsequent runs.
 
 ```bash
 mayar balance
@@ -29,7 +29,7 @@ mayar balance
 # Welcome to Mayar CLI.
 # No API key found. Get yours from https://web.mayar.id → Integration → API Key.
 # Paste your production API key: ************
-# ✓ Saved to /Users/you/.mayar/config.json
+# ✓ Saved to /Users/you/.config/mayar/config.json
 ```
 
 You can also run `mayar init` explicitly to (re-)configure the key, or pass `--api-key <key>` on any invocation to override.
@@ -143,8 +143,10 @@ mayar invoice list --json | jq '.data[] | {id, status}'
 
 | Key      | Value                                      |
 | -------- | ------------------------------------------ |
-| Path     | `~/.mayar/config.json` (chmod 600)         |
+| Path     | `$XDG_CONFIG_HOME/mayar/config.json`, defaulting to `~/.config/mayar/config.json` (chmod 600) |
 | Endpoint | `https://api.mayar.id` (production, fixed) |
+
+Legacy installs that wrote to `~/.mayar/config.json` are migrated automatically on first run.
 
 To rotate keys: `mayar config reset && mayar init`.
 
