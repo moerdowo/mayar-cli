@@ -38,7 +38,8 @@ You can also run `mayar init` explicitly to (re-)configure the key, or pass `--a
 
 ```
 Setup
-  init                                  Run first-time setup
+  init                                  Run first-time setup (interactive, masked input)
+  api-key <key>                         Save API key non-interactively (e.g. for scripts)
   config show                           Show masked saved key
   config reset                          Remove the saved key
 

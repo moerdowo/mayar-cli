@@ -10,6 +10,7 @@ ${ui.bold('Usage:')}
 
 ${ui.bold('Setup:')}
   init                                Run first-time setup (or re-configure API key)
+  api-key <key>                       Save API key non-interactively
   config show                         Show config path and masked API key
   config reset                        Remove the saved API key
 
@@ -123,6 +124,10 @@ async function run(argv) {
     if (cmd === 'init') {
       const init = require('./commands/init');
       return await init.run({ flags });
+    }
+    if (cmd === 'api-key' || cmd === 'apikey') {
+      const apikey = require('./commands/apikey');
+      return await apikey.run({ positional: [sub, ...rest].filter((x) => x !== undefined) });
     }
     if (cmd === 'config') {
       if (sub === 'show') {
