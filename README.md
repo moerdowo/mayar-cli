@@ -44,6 +44,7 @@ Setup
   config reset                          Remove the saved key
 
 Account
+  whoami                                Show merchant identity (decoded from JWT key) + verify
   balance                               GET /hl/v1/balance
 
 Invoices

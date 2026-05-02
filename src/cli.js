@@ -15,6 +15,7 @@ ${ui.bold('Setup:')}
   config reset                        Remove the saved API key
 
 ${ui.bold('Account:')}
+  whoami                              Show identity behind the saved API key
   balance                             Get account balance
 
 ${ui.bold('Invoices:')}
@@ -150,6 +151,7 @@ async function run(argv) {
     }
 
     const handlers = {
+      whoami:       './commands/whoami',
       balance:      './commands/balance',
       invoice:      './commands/invoice',
       product:      './commands/product',
