@@ -13,7 +13,7 @@ npx mayar --help
 Or from source:
 
 ```bash
-git clone https://github.com/moerdowo/mayar-cli.git
+git clone https://github.com/mayarid/mayar-cli.git
 cd mayar-cli
 npm link        # exposes a `mayar` command on your PATH
 ```
