@@ -58,12 +58,16 @@ ${ui.bold('Webhooks:')}
 
 ${ui.bold('Global flags:')}
   --json                Output raw JSON instead of formatted tables
-  --api-key <key>       Override saved API key for this run
+  --api-key <key>       Use this API key for the run (overrides env + saved config)
   --page N              Pagination page (default 1)
   --pageSize N          Pagination page size (default 10)
   -h, --help            Show help
   -v, --version         Show version
 
+${ui.bold('Environment:')}
+  MAYAR_API_KEY         Used when --api-key is not given and no config is saved
+
+${ui.dim('Resolution order: --api-key flag > MAYAR_API_KEY env > saved config.')}
 ${ui.dim('Endpoint: https://api.mayar.id (production only)')}
 ${ui.dim('Config:   ~/.config/mayar/config.json (chmod 600)')}
 `;
@@ -77,6 +81,7 @@ function parseFlags(argv) {
     if (a === '--json') flags.json = true;
     else if (a === '--force') flags.force = true;
     else if (a === '--api-key') flags.apiKey = argv[++i];
+    else if (a.startsWith('--api-key=')) flags.apiKey = a.slice('--api-key='.length);
     else if (a === '--page') flags.page = argv[++i];
     else if (a === '--pageSize' || a === '--page-size') flags.pageSize = argv[++i];
     else if (a === '--data') flags.data = argv[++i];
@@ -95,6 +100,7 @@ function parseFlags(argv) {
 
 async function ensureKey(flags) {
   if (flags.apiKey) return flags.apiKey;
+  if (process.env.MAYAR_API_KEY) return process.env.MAYAR_API_KEY;
   const cfg = config.load();
   if (cfg && cfg.apiKey) return cfg.apiKey;
   // First-run flow

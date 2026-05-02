@@ -87,12 +87,17 @@ Webhooks
 
 Global flags
   --json                Output raw JSON instead of pretty tables
-  --api-key <key>       Override saved key for this run
+  --api-key <key>       Use this API key for the run (also accepts --api-key=KEY)
   --page N              Pagination page (default 1)
   --pageSize N          Pagination page size (default 10)
   -h, --help            Show help
   -v, --version         Show version
+
+Environment
+  MAYAR_API_KEY         Used when --api-key is not given and no config is saved
 ```
+
+Resolution order: `--api-key` flag → `MAYAR_API_KEY` env → saved config.
 
 ## Examples
 
