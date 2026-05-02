@@ -1,6 +1,6 @@
 # mayar
 
-Command-line interface for the [Mayar](https://docs.mayar.id) API. Production-only (`https://api.mayar.id`). Zero runtime dependencies — Node.js 18+ stdlib only.
+Command-line interface for the [Mayar](https://docs.mayar.id) API. Zero runtime dependencies — Node.js 18+ stdlib only.
 
 ## Install
 
@@ -18,21 +18,42 @@ cd mayar-cli
 npm link        # exposes a `mayar` command on your PATH
 ```
 
-## First run
+## Authentication
 
-The first time you invoke any command, the CLI prints an ASCII banner and asks for your production API key (input is masked). Paste it once; it's stored at `~/.config/mayar/config.json` (chmod 600, follows the [XDG Base Directory](https://specification.freedesktop.org/basedir-spec/latest/) spec) and reused on subsequent runs.
+Resolution order: `--api-key` flag → `MAYAR_API_KEY` env → saved config file.
+
+**Option 1 — environment variable (recommended for CI/agents):**
+
+```bash
+export MAYAR_API_KEY=your_api_key_here
+mayar whoami
+```
+
+**Option 2 — saved config (interactive first run):**
+
+The first time you invoke any command without a key configured, the CLI prompts for your production API key (input is masked). Paste it once; it's stored at `~/.config/mayar/config.json` (chmod 600, follows [XDG Base Directory](https://specification.freedesktop.org/basedir-spec/latest/)) and reused on subsequent runs.
 
 ```bash
 mayar balance
-# ███╗   ███╗ █████╗ ██╗   ██╗ █████╗ ██████╗
-# ...
 # Welcome to Mayar CLI.
 # No API key found. Get yours from https://web.mayar.id → Integration → API Key.
 # Paste your production API key: ************
 # ✓ Saved to /Users/you/.config/mayar/config.json
 ```
 
-You can also run `mayar init` explicitly to (re-)configure the key, or pass `--api-key <key>` on any invocation to override.
+**Option 3 — non-interactive setup:**
+
+```bash
+mayar api-key YOUR_KEY_HERE
+```
+
+**Option 4 — per-command override:**
+
+```bash
+mayar --api-key YOUR_KEY_HERE balance
+```
+
+Get your API key from [web.mayar.id](https://web.mayar.id) → Integration → API Key.
 
 ## Commands
 
@@ -40,11 +61,11 @@ You can also run `mayar init` explicitly to (re-)configure the key, or pass `--a
 Setup
   init                                  Run first-time setup (interactive, masked input)
   api-key <key>                         Save API key non-interactively (e.g. for scripts)
-  config show                           Show masked saved key
+  config show                           Show masked saved key and config path
   config reset                          Remove the saved key
 
 Account
-  whoami                                Show merchant identity (decoded from JWT key) + verify
+  whoami                                Show merchant identity (decoded from JWT) + verify key
   balance                               GET /hl/v1/balance
 
 Invoices
@@ -94,14 +115,16 @@ Global flags
   -v, --version         Show version
 
 Environment
-  MAYAR_API_KEY         Used when --api-key is not given and no config is saved
+  MAYAR_API_KEY         API key — used when --api-key flag is absent and no config is saved
+  MAYAR_API_URL         Override API base URL (default: https://api.mayar.id)
 ```
-
-Resolution order: `--api-key` flag → `MAYAR_API_KEY` env → saved config.
 
 ## Examples
 
 ```bash
+# Verify active user / API key
+mayar whoami
+
 # Account balance
 mayar balance
 
@@ -146,10 +169,10 @@ mayar invoice list --json | jq '.data[] | {id, status}'
 
 ## Config
 
-| Key      | Value                                      |
-| -------- | ------------------------------------------ |
+| Key      | Value                                                                                       |
+| -------- | ------------------------------------------------------------------------------------------- |
 | Path     | `$XDG_CONFIG_HOME/mayar/config.json`, defaulting to `~/.config/mayar/config.json` (chmod 600) |
-| Endpoint | `https://api.mayar.id` (production, fixed) |
+| Endpoint | `MAYAR_API_URL` env or `https://api.mayar.id` (default)                                    |
 
 Legacy installs that wrote to `~/.mayar/config.json` are migrated automatically on first run.
 
@@ -157,6 +180,7 @@ To rotate keys: `mayar config reset && mayar init`.
 
 ## Notes
 
-- Sandbox is intentionally not supported — this CLI hits production only.
 - All requests use `Authorization: Bearer <key>`. Errors print `API <status> — <message>` and exit non-zero.
 - `--data @file.json` reads from disk; `--data '{...}'` reads inline JSON.
+- `MAYAR_API_URL` overrides the base URL — useful for staging or custom proxy environments.
+- `mayar whoami` decodes the JWT locally and verifies the key live against `/hl/v1/balance`.

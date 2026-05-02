@@ -66,9 +66,10 @@ ${ui.bold('Global flags:')}
 
 ${ui.bold('Environment:')}
   MAYAR_API_KEY         Used when --api-key is not given and no config is saved
+  MAYAR_API_URL         Override API base URL (default: https://api.mayar.id)
 
 ${ui.dim('Resolution order: --api-key flag > MAYAR_API_KEY env > saved config.')}
-${ui.dim('Endpoint: https://api.mayar.id (production only)')}
+${ui.dim('Endpoint: MAYAR_API_URL env or https://api.mayar.id (default)')}
 ${ui.dim('Config:   ~/.config/mayar/config.json (chmod 600)')}
 `;
 
